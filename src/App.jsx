@@ -125,7 +125,7 @@ const INSIGHT_EXAMPLES = [
   { label: "Board-Ready", text: "Projected growth aligns with our long-term fiscal governance." }
 ];
 
-const openaiApiKey = "";
+const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY || "";
 
 async function callOpenAI(systemPrompt, userText) {
   if (!openaiApiKey) throw new Error("OpenAI API Key is missing.");

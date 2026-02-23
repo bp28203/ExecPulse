@@ -1,0 +1,53 @@
+// Start a new feature
+git checkout dev
+git checkout -b feature/voice-enablement
+git add .
+git commit -m "Add tone enhancement"
+git push -u origin feature/voice-enhancement
+
+// merge to dev 
+git checkout dev
+git merge feature/voice-enhancement
+git push origin dev
+// release to production
+git checkout main
+git merge dev
+git push origin main
+
+
+
+//Work only on dev
+git checkout dev
+
+//Make changes → commit → push:
+
+git add .
+git commit -m "feature work"
+git push origin dev
+
+
+//When ready to release:
+
+git checkout main
+git merge dev
+git push origin main
+
+//Check status
+git status
+
+//See commit history
+git log --oneline
+
+// compare difference b/w remote and dev branch
+git fetch 
+git status 
+// roll back tp previous commit 
+git log 
+git checkout 9f8e7d6(copy the hash from previous command)
+//If you want to create a branch from that commit:
+git checkout -b rollback-test 9f8e7d6(copy the hash from previous command)
+
+// reset branch to previous commit(erase commits after it)
+git reset --hard 9f8e7d6
+//If you already pushed and want to overwrite remote:
+git push --force
