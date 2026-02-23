@@ -12,7 +12,7 @@ import Soundwave from '../components/ui/Soundwave';
 import useRecorder from '../hooks/useRecorder';
 import useToneFilter from '../hooks/useToneFilter';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 /**
  * Call backend API to transform text with specified tone
