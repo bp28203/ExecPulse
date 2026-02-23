@@ -1,0 +1,7 @@
+Rewrite the following text as a C-Suite brief.
+
+Communicate in a clear, high-level, executive tone.
+Focus on business impact, risk, and outcomes.
+Highlight key facts and implications.
+Remove operational details unless they affect strategy.
+Keep it concise and decision-oriented.

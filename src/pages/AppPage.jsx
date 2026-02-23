@@ -53,8 +53,16 @@ export default function AppPage() {
     setError(null);
     try {
       const tonePrompt = TONE_CONFIG[selectedTone].prompt;
+      
+      // Log the tone being used
+     // console.log('🎯 Transforming with tone:', selectedTone);
+      //console.log('📝 Tone prompt:', tonePrompt);
+      //console.log('💬 Original text:', transcript);
+      
       const result = await callBackendTransform(transcript, tonePrompt);
       setRewrittenText(result);
+      
+      //console.log('✨ Transformed text:', result);
     } catch (err) { setError(err.message); }
     finally { setIsRewriting(false); }
   };
