@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Mic, 
   Square, 
@@ -49,6 +49,9 @@ import {
 import Card from './components/ui/Card';
 import Soundwave from './components/ui/Soundwave';
 import TypingInsight from './components/ui/TypingInsight';
+import useRecorder from './hooks/useRecorder';
+import useHeroCarousel from './hooks/useHeroCarousel';
+import useToneFilter from './hooks/useToneFilter';
 
 const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY || "";
 
@@ -86,21 +89,16 @@ async function transcribeAudio(audioBlob) {
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState("");
-  const [isTranscribing, setIsTranscribing] = useState(false);
   const [rewrittenText, setRewrittenText] = useState("");
   const [isRewriting, setIsRewriting] = useState(false);
   const [selectedTone, setSelectedTone] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [error, setError] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Auth state
-  const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
+  const [authMode, setAuthMode] = useState('login');
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPass, setLoginPass] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -110,50 +108,15 @@ export default function App() {
   const [signupTitle, setSignupTitle] = useState("");
   const [signupIndustry, setSignupIndustry] = useState("");
 
-  const mediaRecorderRef = useRef(null);
-  const audioChunksRef = useRef([]);
-
-  useEffect(() => {
-    if (currentPage !== 'home') return;
-    const interval = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [currentPage]);
+  // Feature hooks
+  const { isRecording, transcript, isTranscribing, error, setTranscript, setError, startRecording, stopRecording } = useRecorder();
+  const currentHeroIndex = useHeroCarousel(currentPage === 'home');
+  const filteredTones = useToneFilter(activeCategory, searchQuery);
 
   useEffect(() => {
     if (isDarkMode) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
   }, [isDarkMode]);
-
-  const startRecording = async () => {
-    try {
-      setError(null);
-      audioChunksRef.current = [];
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      mediaRecorderRef.current = new MediaRecorder(stream);
-      mediaRecorderRef.current.ondataavailable = (e) => { if (e.data.size > 0) audioChunksRef.current.push(e.data); };
-      mediaRecorderRef.current.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
-        setIsTranscribing(true);
-        try {
-          const text = await transcribeAudio(audioBlob);
-          setTranscript(text);
-        } catch (err) { setError(err.message); }
-        finally { setIsTranscribing(false); }
-      };
-      mediaRecorderRef.current.start();
-      setIsRecording(true);
-    } catch (err) { setError("Enable microphone access."); }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && isRecording) {
-      mediaRecorderRef.current.stop();
-      setIsRecording(false);
-      mediaRecorderRef.current.stream.getTracks().forEach(t => t.stop());
-    }
-  };
 
   const handleTransform = async () => {
     if (!transcript.trim()) return setError("Please record or type something first.");
@@ -189,12 +152,6 @@ export default function App() {
       setCurrentPage('app');
     }, 1500);
   };
-
-  const filteredTones = Object.entries(TONE_CONFIG).filter(([name, config]) => {
-    const matchesCategory = activeCategory === "All" || config.category === activeCategory;
-    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
 
   const NavItem = ({ label, onClick, active = false }) => (
     <button 
