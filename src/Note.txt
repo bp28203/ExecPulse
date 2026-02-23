@@ -51,3 +51,9 @@ git checkout -b rollback-test 9f8e7d6(copy the hash from previous command)
 git reset --hard 9f8e7d6
 //If you already pushed and want to overwrite remote:
 git push --force
+
+//running server 
+
+cd server
+npm run dev
+# ✓ API running on http://localhost:3001
