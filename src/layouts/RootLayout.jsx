@@ -9,8 +9,26 @@ export default function RootLayout({ children }) {
   const location = useLocation();
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = window.localStorage.getItem('theme');
+    if (stored === 'dark') {
+      setIsDarkMode(true);
+      return;
+    }
+    if (stored === 'light') {
+      setIsDarkMode(false);
+      return;
+    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setIsDarkMode(prefersDark);
+  }, []);
+
+  useEffect(() => {
     if (isDarkMode) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    }
   }, [isDarkMode]);
 
   const NavItem = ({ label, onClick, active = false }) => (
