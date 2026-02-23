@@ -12,22 +12,25 @@ import Soundwave from '../components/ui/Soundwave';
 import useRecorder from '../hooks/useRecorder';
 import useToneFilter from '../hooks/useToneFilter';
 
-const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY || "";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
-async function callOpenAI(systemPrompt, userText) {
-  if (!openaiApiKey) throw new Error("OpenAI API Key is missing.");
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${openaiApiKey}` },
-    body: JSON.stringify({
-      model: "gpt-4o",
-      messages: [{ role: "system", content: systemPrompt }, { role: "user", content: userText }],
-      temperature: 0.7
-    })
+/**
+ * Call backend API to transform text with specified tone
+ */
+async function callBackendTransform(text, tonePrompt) {
+  const response = await fetch(`${API_BASE_URL}/api/transform`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, tonePrompt }),
   });
-  if (!response.ok) throw new Error("OpenAI request failed");
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Failed to transform text');
+  }
+
   const data = await response.json();
-  return data.choices[0].message.content;
+  return data.transformedText;
 }
 
 export default function AppPage() {
@@ -49,8 +52,8 @@ export default function AppPage() {
     setRewrittenText(""); 
     setError(null);
     try {
-      const systemPrompt = `Executive Coach Transformation: ${TONE_CONFIG[selectedTone].prompt}`;
-      const result = await callOpenAI(systemPrompt, transcript);
+      const tonePrompt = TONE_CONFIG[selectedTone].prompt;
+      const result = await callBackendTransform(transcript, tonePrompt);
       setRewrittenText(result);
     } catch (err) { setError(err.message); }
     finally { setIsRewriting(false); }

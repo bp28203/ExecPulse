@@ -1,18 +1,22 @@
 import { useState, useRef } from 'react';
 
-const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY || "";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
+/**
+ * Call backend API to transcribe audio
+ */
 async function transcribeAudio(audioBlob) {
-  if (!openaiApiKey) throw new Error("OpenAI API Key is missing.");
-  const formData = new FormData();
-  formData.append("file", audioBlob, "recording.webm");
-  formData.append("model", "whisper-1");
-  const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
-    method: "POST",
-    headers: { "Authorization": `Bearer ${openaiApiKey}` },
-    body: formData
+  const response = await fetch(`${API_BASE_URL}/api/transcribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/octet-stream' },
+    body: audioBlob,
   });
-  if (!response.ok) throw new Error("Transcription failed");
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || 'Transcription failed');
+  }
+
   const data = await response.json();
   return data.text;
 }
