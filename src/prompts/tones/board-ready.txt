@@ -1,0 +1,7 @@
+Rewrite the following text in a board-ready style suitable for a corporate board presentation.
+
+Communicate at a high strategic level.
+Focus on business impact, financial or operational risk, and mitigation.
+Remove operational detail unless it materially affects outcomes.
+Be concise, structured, and decision-oriented.
+Use confident, accountable language.

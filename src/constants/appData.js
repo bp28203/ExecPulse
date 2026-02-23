@@ -1,3 +1,16 @@
+import executivePrompt from '../prompts/tones/executive.txt?raw';
+import metaphorPrompt from '../prompts/tones/metaphor.txt?raw';
+import storytellingPrompt from '../prompts/tones/storytelling.txt?raw';
+import assertivePrompt from '../prompts/tones/assertive.txt?raw';
+import concisePrompt from '../prompts/tones/concise.txt?raw';
+import diplomaticPrompt from '../prompts/tones/diplomatic.txt?raw';
+import strategicPrompt from '../prompts/tones/strategic.txt?raw';
+import boardReadyPrompt from '../prompts/tones/board-ready.txt?raw';
+import cSuiteBriefPrompt from '../prompts/tones/c-suite-brief.txt?raw';
+import influentialPrompt from '../prompts/tones/influential.txt?raw';
+import empatheticPrompt from '../prompts/tones/empathetic.txt?raw';
+import radicalCandorPrompt from '../prompts/tones/radical-candor.txt?raw';
+
 export const CATEGORIES = ["All", "Strategic", "Direct", "People", "Formal"];
 
 export const HERO_IMAGES = [
@@ -63,18 +76,18 @@ export const CATEGORY_THEMES = {
 };
 
 export const TONE_CONFIG = {
-  Executive: { category: "Strategic", description: "Authoritative & outcome-oriented.", prompt: "Rewrite this to sound like a seasoned executive: authoritative, high-level, and focused on outcomes." },
-  Metaphor: { category: "Strategic", description: "Clear, professional analogies.", prompt: "Rewrite the following text using a clear, professional metaphor or analogy that strengthens the message. Keep it concise and leadership-appropriate. Do not be overly dramatic or poetic." },
-  Storytelling: { category: "People", description: "Short, narrative-led leading.", prompt: "Rewrite the following text in a short storytelling style suitable for leadership communication." },
-  Assertive: { category: "Direct", description: "Direct, firm, and confident.", prompt: "Rewrite this to be direct and firm. Eliminate hedging language like 'I think' or 'maybe'." },
-  Concise: { category: "Direct", description: "Brief and efficient.", prompt: "Rewrite this to be as brief as possible while retaining all key information." },
-  Diplomatic: { category: "People", description: "Tactful and nuanced.", prompt: "Rewrite this to be tactful and inclusive, maintaining accountability while softening critiques." },
-  Strategic: { category: "Strategic", description: "Visionary & long-term focused.", prompt: "Rewrite this to emphasize long-term goals and 'big picture' implications." },
-  "Board-Ready": { category: "Formal", description: "Formal and risk-aware.", prompt: "Rewrite this for a Board of Directors. Focus on ROI, governance, and risk mitigation." },
-  "C-Suite Brief": { category: "Formal", description: "High-speed briefing.", prompt: "Rewrite this as a rapid brief for a CEO (Bottom Line Up Front)." },
-  Influential: { category: "People", description: "Persuasive and inspirational.", prompt: "Rewrite this using persuasive techniques to build buy-in and inspire action." },
-  Empathetic: { category: "People", description: "Supportive and high EQ.", prompt: "Rewrite this to sound empathetic and supportive while remaining professional." },
-  "Radical Candor": { category: "Direct", description: "Direct but caring.", prompt: "Rewrite using Radical Candor: be extremely direct but show you care about the person." }
+  Executive: { category: "Strategic", description: "Authoritative & outcome-oriented.", prompt: executivePrompt },
+  Metaphor: { category: "Strategic", description: "Clear, professional analogies.", prompt: metaphorPrompt },
+  Storytelling: { category: "People", description: "Short, narrative-led leading.", prompt: storytellingPrompt },
+  Assertive: { category: "Direct", description: "Direct, firm, and confident.", prompt: assertivePrompt },
+  Concise: { category: "Direct", description: "Brief and efficient.", prompt: concisePrompt },
+  Diplomatic: { category: "People", description: "Tactful and nuanced.", prompt: diplomaticPrompt },
+  Strategic: { category: "Strategic", description: "Visionary & long-term focused.", prompt: strategicPrompt },
+  "Board-Ready": { category: "Formal", description: "Formal and risk-aware.", prompt: boardReadyPrompt },
+  "C-Suite Brief": { category: "Formal", description: "High-speed briefing.", prompt: cSuiteBriefPrompt },
+  Influential: { category: "People", description: "Persuasive and inspirational.", prompt: influentialPrompt },
+  Empathetic: { category: "People", description: "Supportive and high EQ.", prompt: empatheticPrompt },
+  "Radical Candor": { category: "Direct", description: "Direct but caring.", prompt: radicalCandorPrompt }
 };
 
 export const INSIGHT_EXAMPLES = [

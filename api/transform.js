@@ -42,6 +42,11 @@ export default async function handler(req, res) {
 
     const systemPrompt = `Executive Coach Transformation: ${tonePrompt}`;
 
+    // Log the prompt being sent to OpenAI
+    //console.log('🔄 Transform API called');
+    //console.log('📋 System prompt:', systemPrompt);
+    //console.log('💬 User text length:', text.length, 'characters');
+
     const response = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: [
